@@ -11,6 +11,7 @@ public class MenuScreen extends BaseScreen {
     Texture imgBackground;
     private Vector2 touch;
     private Vector2 v;
+    private Vector2 pos;
 
     @Override
     public void show() {
@@ -19,6 +20,7 @@ public class MenuScreen extends BaseScreen {
         imgBackground = new Texture("background.jpg");
         touch = new Vector2();
         v = new Vector2(1,1);
+        pos = new Vector2();
     }
 
     @Override
@@ -26,8 +28,14 @@ public class MenuScreen extends BaseScreen {
         super.render(delta);
         batch.begin();
         batch.draw(imgBackground,0,0,500,500);
-        batch.draw(img, 500, 340,140,140);
+        batch.draw(img, pos.x,pos.y, 140,140);
         batch.end();
+
+        if (pos.dst(touch)<=v.len()){
+            pos.set(touch);
+        } else {
+            pos.add(v);
+        }
     }
 
     @Override
@@ -40,6 +48,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touch.set(screenX, Gdx.graphics.getHeight()-screenY);
+        v.set(touch.cpy().sub(pos)).nor();
         return super.touchDown(screenX, screenY, pointer, button);
     }
 }
