@@ -46,7 +46,7 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         System.out.println("dispose");
-        dispose();
+        batch.dispose();
     }
 
     @Override
