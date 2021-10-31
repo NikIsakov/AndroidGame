@@ -11,6 +11,7 @@ import com.mygdx.game.sprite.Background;
 import com.mygdx.game.sprite.ExitButton;
 import com.mygdx.game.sprite.Logo;
 import com.mygdx.game.sprite.PlayButton;
+import com.mygdx.game.sprite.Ship;
 import com.mygdx.game.sprite.Star;
 
 public class MenuScreen extends BaseScreen {
@@ -30,6 +31,7 @@ public class MenuScreen extends BaseScreen {
 
     private Background background;
     private Star[] stars;
+
 
     private ExitButton exitButton;
     private PlayButton playButton;
