@@ -33,6 +33,8 @@ public class Ship extends Sprite {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
+    public float autoshoot = 0f;
+
     public Ship(TextureAtlas atlas, BulletPool bulletPool) {
         super(new TextureRegion(atlas.findRegion("main_ship")),1,2,2);
         this.bulletPool = bulletPool;
@@ -55,6 +57,10 @@ public class Ship extends Sprite {
     @Override
     public void update(float delta) {
         pos.mulAdd(v,delta);
+        autoshoot+=delta;
+        if(autoshoot>=0){
+            shoot();
+        }
         //        if (getRight() > worldBounds.getRight()) {
 //            setRight(worldBounds.getRight());
 //            stop();
