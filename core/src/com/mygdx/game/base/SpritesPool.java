@@ -1,5 +1,7 @@
 package com.mygdx.game.base;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ public abstract class SpritesPool<T extends Sprite> {
     protected final List<T> freeObjects = new ArrayList<>();
 
     protected abstract T newObject();
+    Sound sound;
 
     public T obtain() {
         T object;
@@ -20,7 +23,9 @@ public abstract class SpritesPool<T extends Sprite> {
             object = freeObjects.remove(freeObjects.size() - 1);
         }
         activeObjects.add(object);
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
         System.out.println(getClass().getSimpleName() + " active/free: " + activeObjects.size() + "/" + freeObjects.size());
+        sound.play();
         return object;
     }
 
@@ -29,7 +34,7 @@ public abstract class SpritesPool<T extends Sprite> {
             if (!object.isDestroyed()) {
                 object.update(delta);
             }
-        }
+       }
     }
 
     public void drawActiveObjects(SpriteBatch batch) {
@@ -57,6 +62,7 @@ public abstract class SpritesPool<T extends Sprite> {
     public void dispose() {
         activeObjects.clear();
         freeObjects.clear();
+        sound.dispose();
     }
 
     private void free(T object) {
