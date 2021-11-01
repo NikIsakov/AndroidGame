@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.base.BaseScreen;
 import com.mygdx.game.math.Rect;
+import com.mygdx.game.pool.BulletPool;
 import com.mygdx.game.sprite.Background;
 import com.mygdx.game.sprite.Ship;
 import com.mygdx.game.sprite.Star;
@@ -22,12 +23,16 @@ public class GameScreen extends BaseScreen {
     private Star[] stars;
     private Ship ship;
 
+    private BulletPool bulletPool;
+
     @Override
     public void show() {
         super.show();
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
         bg = new Texture("textures/bg.png");
-        ship = new Ship(atlas);
+
+        bulletPool = new BulletPool();
+        ship = new Ship(atlas, bulletPool);
 
         background = new Background(bg);
         stars = new Star[STAR_COUNT];
@@ -40,6 +45,7 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
         update(delta);
+        freeAllDestroyed();
         draw();
     }
 
@@ -58,6 +64,7 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         bg.dispose();
         atlas.dispose();
+        bulletPool.dispose();
     }
 
     @Override
@@ -74,28 +81,36 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        return super.touchDown(touch, pointer, button);
+        ship.touchDown(touch, pointer, button);
+        return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
-        return super.touchUp(touch, pointer, button);
+        ship.touchUp(touch, pointer, button);
+        return false;
     }
 
     private void update(float delta) {
-        ship.update(delta);
         for (Star star : stars) {
             star.update(delta);
         }
+        bulletPool.updateActiveObjects(delta);
+        ship.update(delta);
+    }
+
+    private void freeAllDestroyed() {
+        bulletPool.freeAllDestroyed();
     }
 
     private void draw() {
         batch.begin();
         background.draw(batch);
-        ship.draw(batch);
         for (Star star : stars) {
             star.draw(batch);
         }
+        bulletPool.drawActiveObjects(batch);
+        ship.draw(batch);
         batch.end();
     }
 }
