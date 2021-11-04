@@ -9,7 +9,7 @@ import com.mygdx.game.base.Sprite;
 import com.mygdx.game.math.Rect;
 import com.mygdx.game.pool.BulletPool;
 
-public class Ship extends Sprite {
+public class MainShip extends Sprite {
 
     private static final float HEIGHT = 0.15f;
     //private static final float BOTTOM_MARGIN = 0.05f;
@@ -33,8 +33,8 @@ public class Ship extends Sprite {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
-    public Ship(TextureAtlas atlas, BulletPool bulletPool) {
-        super(new TextureRegion(atlas.findRegion("main_ship")),1,2,2);
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+        super(atlas.findRegion("main_ship"),1,2,2);
         this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletV = new Vector2(0, 0.5f);
