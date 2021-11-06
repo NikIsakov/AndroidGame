@@ -41,9 +41,11 @@ public class EnemyEmitter {
     private final Vector2 enemySmallV = new Vector2(0f, -0.2f);
     private final Vector2 enemyMediumV = new Vector2(0f, -0.03f);
     private final Vector2 enemyBigV = new Vector2(0f, -0.005f);
+    private final Vector2 enemyBigV2 = new Vector2(0f, -0.5f);
     private final Vector2 enemySmallBulletV = new Vector2(0f, -0.3f);
     private final Vector2 enemyMediumBulletV = new Vector2(0f, -0.25f);
     private final Vector2 enemyBigBulletV = new Vector2(0f, -0.3f);
+    private final Vector2 enemyBigBulletV2 = new Vector2(0f, -0.0f);
 
     public EnemyEmitter(EnemyPool enemyPool, Rect worldBounds, TextureAtlas atlas) {
         this.enemyPool = enemyPool;
@@ -87,17 +89,15 @@ public class EnemyEmitter {
                         ENEMY_MEDIUM_HEIGHT
                 );
             } else {
-                enemy.set(
-                        enemyBigRegions,
-                        enemyBigV,
-                        bulletRegion,
-                        ENEMY_BIG_BULLET_HEIGHT,
-                        enemyBigBulletV,
-                        ENEMY_BIG_BULLET_DAMAGE,
-                        ENEMY_BIG_HP,
-                        ENEMY_BIG_RELOAD_INTERVAL,
-                        ENEMY_BIG_HEIGHT
-                );
+                    enemy.set(enemyBigRegions,
+                            enemyBigV,
+                            bulletRegion,
+                            ENEMY_BIG_BULLET_HEIGHT,
+                            enemyBigBulletV,
+                            ENEMY_BIG_BULLET_DAMAGE,
+                            ENEMY_BIG_HP,
+                            ENEMY_BIG_RELOAD_INTERVAL,
+                            ENEMY_BIG_HEIGHT);
             }
             enemy.pos.x = Rnd.nextFloat(
                     worldBounds.getLeft() + enemy.getHalfWidth(),
