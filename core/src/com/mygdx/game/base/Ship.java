@@ -9,6 +9,8 @@ import com.mygdx.game.pool.ExplosionPool;
 import com.mygdx.game.sprite.Bullet;
 import com.mygdx.game.sprite.Explosion;
 
+import java.util.logging.Logger;
+
 public class Ship extends Sprite {
 
     private static final float DAMAGE_ANIMATE_INTERVAL = 0.1f;
@@ -60,6 +62,7 @@ public class Ship extends Sprite {
         if (this.hp <= 0) {
             this.hp = 0;
             destroy();
+            System.out.println("delete in class Ship");
         }
         damageAnimateTimer = 0f;
         frame = 1;

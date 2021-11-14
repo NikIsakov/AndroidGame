@@ -1,5 +1,6 @@
 package com.mygdx.game.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +14,9 @@ import com.mygdx.game.pool.ExplosionPool;
 import com.mygdx.game.sprite.Background;
 import com.mygdx.game.sprite.Bullet;
 import com.mygdx.game.sprite.EnemyShip;
+import com.mygdx.game.sprite.GameOver;
 import com.mygdx.game.sprite.MainShip;
+import com.mygdx.game.sprite.NewGameButton;
 import com.mygdx.game.sprite.Star;
 import com.mygdx.game.utils.EnemyEmitter;
 
@@ -39,6 +42,9 @@ public class GameScreen extends BaseScreen {
 
     private Sound explosionSound;
 
+    private GameOver gameOver;
+    private int frags;
+    private NewGameButton newGameButton;
 
     @Override
     public void show() {
@@ -57,6 +63,9 @@ public class GameScreen extends BaseScreen {
         enemyPool = new EnemyPool(bulletPool, explosionPool, worldBounds);
         mainShip = new MainShip(atlas, bulletPool, explosionPool);
         enemyEmitter = new EnemyEmitter(enemyPool, worldBounds, atlas);
+        gameOver = new GameOver(atlas);
+        newGameButton = new NewGameButton(atlas, this);
+        frags = 0;
     }
 
     @Override
@@ -76,6 +85,8 @@ public class GameScreen extends BaseScreen {
             star.resize(worldBounds);
         }
         mainShip.resize(worldBounds);
+        gameOver.resize(worldBounds);
+        newGameButton.resize(worldBounds);
     }
 
     @Override
@@ -104,12 +115,14 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         mainShip.touchDown(touch, pointer, button);
+        newGameButton.touchDown(touch,pointer,button);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         mainShip.touchUp(touch, pointer, button);
+        newGameButton.touchUp(touch,pointer,button);
         return false;
     }
 
@@ -176,8 +189,19 @@ public class GameScreen extends BaseScreen {
             bulletPool.drawActiveObjects(batch);
             enemyPool.drawActiveObjects(batch);
             mainShip.draw(batch);
+        } else {
+            gameOver.draw(batch);
+            newGameButton.draw(batch);
         }
         explosionPool.drawActiveObjects(batch);
         batch.end();
+    }
+
+    public void startNewGame() {
+        frags = 0;
+        mainShip.starNewGame();
+        bulletPool.freeAllActiveObject();
+        explosionPool.freeAllActiveObject();
+        enemyPool.freeAllActiveObject();
     }
 }
