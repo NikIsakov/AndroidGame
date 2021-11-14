@@ -34,6 +34,10 @@ public class MainShip extends Ship {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
+    private static final int HP = 100;
+
+    //public float autoshoot = 0f;
+
     public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"),1,2,2);
         this.bulletPool = bulletPool;
@@ -43,7 +47,7 @@ public class MainShip extends Ship {
         this.bulletPos = new Vector2();
         this.bulletHeight = 0.01f;
         this.damage = 1;
-        this.hp = 1;
+        this.hp = HP;
         this.v = new Vector2();
         this.speed = new Vector2(0.4f, 0);
         this.reloadInterval = RELOAD_INTERVAL;
@@ -76,13 +80,11 @@ public class MainShip extends Ship {
         if (getRight() < worldBounds.getLeft()) {
             setLeft(worldBounds.getRight());
         }
+
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-//        this.touch.set(touch);
-//        v.set(touch.cpy().sub(pos)).nor();
-//        return false;
         if (touch.x < worldBounds.pos.x) {
             if (leftPointer != INVALID_POINTER) {
                 return false;
@@ -120,12 +122,6 @@ public class MainShip extends Ship {
     }
 
     public boolean keyDown(int keycode) {
-//        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-//            v.set(speed);
-//        } else if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-//            v.set(speed).rotateDeg(180);
-//        }
-//        return false;
         switch (keycode) {
             case Input.Keys.A:
             case Input.Keys.LEFT:
@@ -182,5 +178,21 @@ public class MainShip extends Ship {
 
     private void stop() {
         v.setZero();
+    }
+
+    private void shoot() {
+        Bullet bullet = bulletPool.obtain();
+        bullet.set(this, bulletRegion, this.pos, bulletV, worldBounds, bulletHeight, damage);
+    }
+
+    public void starNewGame(){
+        hp = HP;
+        leftPointer = INVALID_POINTER;
+        rightPointer = INVALID_POINTER;
+        pressedLeft = false;
+        pressedRight = false;
+        stop();
+        pos.x = worldBounds.pos.x;
+        flushDestroy();
     }
 }

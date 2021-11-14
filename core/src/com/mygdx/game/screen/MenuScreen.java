@@ -1,6 +1,8 @@
 package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -18,9 +20,6 @@ public class MenuScreen extends BaseScreen {
     private final Game game;
 
     private Texture img;
-    //Texture imgBackground;
-//    private Vector2 touch;
-//    private Vector2 v;
     private Vector2 pos;
 
     private TextureAtlas atlas;
@@ -33,7 +32,7 @@ public class MenuScreen extends BaseScreen {
     private ExitButton exitButton;
     private PlayButton playButton;
 
-    //private Logo logo;
+    private Music music;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -43,6 +42,9 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        music.setLooping(true);
+        music.play();
         atlas = new TextureAtlas("textures/menuAtlas.tpack");
         bg = new Texture("textures/bg.png");
         background = new Background(bg);
@@ -54,10 +56,6 @@ public class MenuScreen extends BaseScreen {
         playButton = new PlayButton(atlas, game);
 
         img = new Texture("badlogic.jpg");
-        //logo = new Logo(img);
-        //imgBackground = new Texture("background.jpg");
-//        touch = new Vector2();
-//        v = new Vector2(1,1);
         pos = new Vector2();
     }
 
@@ -70,16 +68,13 @@ public class MenuScreen extends BaseScreen {
         }
         exitButton.resize(worldBounds);
         playButton.resize(worldBounds);
-        //logo.resize(worldBounds);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-        //logo.update(delta);
         update(delta);
         draw();
-
     }
 
     @Override
@@ -87,24 +82,9 @@ public class MenuScreen extends BaseScreen {
         super.dispose();
         img.dispose();
         bg.dispose();
-        //imgBackground.dispose();
         atlas.dispose();
+        music.dispose();
     }
-
-//    @Override
-//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        touch.set(screenX, Gdx.graphics.getHeight()-screenY);
-//        v.set(touch.cpy().sub(pos)).nor();
-//        return super.touchDown(screenX, screenY, pointer, button);
-//    }
-
-//    @Override
-//    public boolean touchDown(Vector2 touch, int pointer, int button) {
-//        pos.set(touch);
-//        logo.touchDown(touch,pointer,button);
-//        return super.touchDown(touch, pointer, button);
-//    }
-
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
@@ -129,7 +109,6 @@ public class MenuScreen extends BaseScreen {
     private void draw() {
         batch.begin();
         background.draw(batch);
-        //logo.draw(batch);
         for (Star star : stars) {
             star.draw(batch);
         }

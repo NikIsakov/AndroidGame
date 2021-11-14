@@ -1,6 +1,5 @@
 package com.mygdx.game.base;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.math.Rect;
@@ -15,7 +14,6 @@ public class Ship extends Sprite {
 
     protected ExplosionPool explosionPool;
     protected BulletPool bulletPool;
-    protected Sound bulletSound;
     protected TextureRegion bulletRegion;
     protected Vector2 bulletV;
     protected Vector2 bulletPos;
@@ -69,6 +67,10 @@ public class Ship extends Sprite {
         return damage;
     }
 
+    public int getHp() {
+        return hp;
+    }
+
     @Override
     public void destroy() {
         super.destroy();
@@ -78,7 +80,6 @@ public class Ship extends Sprite {
     private void shoot() {
         Bullet bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, bulletPos, bulletV, worldBounds, bulletHeight, damage);
-        //bulletSound.play();
     }
 
     private void boom() {
